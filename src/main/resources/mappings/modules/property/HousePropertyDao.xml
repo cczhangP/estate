@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.property.dao.HousePropertyDao">
+    
+	<sql id="housePropertyColumns">
+		a.id AS "id",
+		a.fc_name AS "fcName",
+		a.fc_code AS "fcCode",
+		a.fc_property AS "fcProperty",
+		a.architecture_area AS "architectureArea",
+		a.fc_state AS "fcState",
+		a.city AS "city",
+		a.grade AS "grade",
+		a.property_name AS "propertyName",
+		a.property_address AS "propertyAddress",
+		a.house_structure AS "houseStructure",
+		a.fc_remake AS "fcRemake",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="housePropertyJoins">
+	</sql>
+    
+	<select id="get" resultType="HouseProperty">
+		SELECT 
+			<include refid="housePropertyColumns"/>
+		FROM house_property a
+		<include refid="housePropertyJoins"/>
+		WHERE a.id = #{id}
+	</select>
+
+	<select id="getByCode" resultType="HouseProperty">
+		SELECT
+		<include refid="housePropertyColumns"/>
+		FROM house_property a
+		<include refid="housePropertyJoins"/>
+		WHERE a.fc_code = #{fcCode}
+		and a.del_flag=0
+	</select>
+	
+	<select id="findList" resultType="HouseProperty">
+		SELECT 
+			<include refid="housePropertyColumns"/>
+		FROM house_property a
+		<include refid="housePropertyJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="HouseProperty">
+		SELECT 
+			<include refid="housePropertyColumns"/>
+		FROM house_property a
+		<include refid="housePropertyJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO house_property(
+			id,
+			fc_name,
+			fc_code,
+			fc_property,
+			architecture_area,
+			fc_state,
+			city,
+			grade,
+			property_name,
+			property_address,
+			house_structure,
+			fc_remake,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{fcName},
+			#{fcCode},
+			#{fcProperty},
+			#{architectureArea},
+			#{fcState},
+			#{city},
+			#{grade},
+			#{propertyName},
+			#{propertyAddress},
+			#{houseStructure},
+			#{fcRemake},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE house_property SET 	
+			fc_name = #{fcName},
+			fc_code = #{fcCode},
+			fc_property = #{fcProperty},
+			architecture_area = #{architectureArea},
+			fc_state = #{fcState},
+			city = #{city},
+			grade = #{grade},
+			property_name = #{propertyName},
+			property_address = #{propertyAddress},
+			house_structure = #{houseStructure},
+			fc_remake = #{fcRemake},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE house_property SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

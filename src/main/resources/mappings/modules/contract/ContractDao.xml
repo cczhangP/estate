@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.contract.dao.ContractDao">
+    
+	<sql id="contractColumns">
+		a.id AS "id",
+		a.fc_code AS "fcCode",
+		a.invoices_code AS "invoicesCode",
+		a.contract_type AS "contractType",
+		a.contract_code AS "contractCode",
+		a.first_party AS "firstParty",
+		a.first_party_contacts AS "firstPartyContacts",
+		a.first_party_contacts_phone AS "firstPartyContactsPhone",
+		a.first_party_contacts_adress AS "firstPartyContactsAdress",
+		a.second_party AS "secondParty",
+		a.second_party_contacts AS "secondPartyContacts",
+		a.second_party_contacts_phone AS "secondPartyContactsPhone",
+		a.second_party_contacts_adress AS "secondPartyContactsAdress",
+		a.contract_money AS "contractMoney",
+		a.registrant AS "registrant",
+		a.registration_date AS "registrationDate",
+		a.attachment AS "attachment",
+		a.remake AS "remake",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="contractJoins">
+	</sql>
+    
+	<select id="get" resultType="Contract">
+		SELECT 
+			<include refid="contractColumns"/>
+		FROM contract a
+		<include refid="contractJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="Contract">
+		SELECT 
+			<include refid="contractColumns"/>
+		FROM contract a
+		<include refid="contractJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="Contract">
+		SELECT 
+			<include refid="contractColumns"/>
+		FROM contract a
+		<include refid="contractJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO contract(
+			id,
+			fc_code,
+			invoices_code,
+			contract_type,
+			contract_code,
+			first_party,
+			first_party_contacts,
+			first_party_contacts_phone,
+			first_party_contacts_adress,
+			second_party,
+			second_party_contacts,
+			second_party_contacts_phone,
+			second_party_contacts_adress,
+			contract_money,
+			registrant,
+			registration_date,
+			attachment,
+			remake,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{fcCode},
+			#{invoicesCode},
+			#{contractType},
+			#{contractCode},
+			#{firstParty},
+			#{firstPartyContacts},
+			#{firstPartyContactsPhone},
+			#{firstPartyContactsAdress},
+			#{secondParty},
+			#{secondPartyContacts},
+			#{secondPartyContactsPhone},
+			#{secondPartyContactsAdress},
+			#{contractMoney},
+			#{registrant},
+			#{registrationDate},
+			#{attachment},
+			#{remake},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE contract SET 	
+			fc_code = #{fcCode},
+			invoices_code = #{invoicesCode},
+			contract_type = #{contractType},
+			contract_code = #{contractCode},
+			first_party = #{firstParty},
+			first_party_contacts = #{firstPartyContacts},
+			first_party_contacts_phone = #{firstPartyContactsPhone},
+			first_party_contacts_adress = #{firstPartyContactsAdress},
+			second_party = #{secondParty},
+			second_party_contacts = #{secondPartyContacts},
+			second_party_contacts_phone = #{secondPartyContactsPhone},
+			second_party_contacts_adress = #{secondPartyContactsAdress},
+			contract_money = #{contractMoney},
+			registrant = #{registrant},
+			registration_date = #{registrationDate},
+			attachment = #{attachment},
+			remake = #{remake},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE contract SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

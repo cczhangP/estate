@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.certificate.dao.CertificateDao">
+    
+	<sql id="certificateColumns">
+		a.id AS "id",
+		a.certificate_name AS "certificateName",
+		a.certificate_code AS "certificateCode",
+		a.certificate_term AS "certificateTerm",
+		a.certificate_date AS "certificateDate",
+		a.handle_situation AS "handleSituation",
+		a.manager_department AS "managerDepartment",
+		a.fc_code AS "fcCode",
+		a.fc_state AS "fcState",
+		a.land_name AS "landName",
+		a.architecture_area AS "architectureArea",
+		a.land_area AS "landArea",
+		a.use_area AS "useArea",
+		a.architecture AS "architecture",
+		a.ownership_name AS "ownershipName",
+		a.purpose AS "purpose",
+		a.price AS "price",
+		a.rights AS "rights",
+		a.description AS "description",
+		a.other_departments AS "otherDepartments",
+		a.address AS "address",
+		a.notes AS "notes",
+		a.handover AS "handover",
+		a.papers AS "papers",
+		a.handover_download AS "handoverDownload",
+		a.papers_download AS "papersDownload",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="certificateJoins">
+	</sql>
+    
+	<select id="get" resultType="Certificate">
+		SELECT 
+			<include refid="certificateColumns"/>
+		FROM certificate a
+		<include refid="certificateJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="Certificate">
+		SELECT 
+			<include refid="certificateColumns"/>
+		FROM certificate a
+		<include refid="certificateJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="Certificate">
+		SELECT 
+			<include refid="certificateColumns"/>
+		FROM certificate a
+		<include refid="certificateJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO certificate(
+			id,
+			certificate_name,
+			certificate_code,
+			certificate_term,
+			certificate_date,
+			handle_situation,
+			manager_department,
+			fc_code,
+			fc_state,
+			land_name,
+			architecture_area,
+			land_area,
+			use_area,
+			architecture,
+			ownership_name,
+			purpose,
+			price,
+			rights,
+			description,
+			other_departments,
+			address,
+			notes,
+			handover,
+			papers,
+			handover_download,
+			papers_download,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{certificateName},
+			#{certificateCode},
+			#{certificateTerm},
+			#{certificateDate},
+			#{handleSituation},
+			#{managerDepartment},
+			#{fcCode},
+			#{fcState},
+			#{landName},
+			#{architectureArea},
+			#{landArea},
+			#{useArea},
+			#{architecture},
+			#{ownershipName},
+			#{purpose},
+			#{price},
+			#{rights},
+			#{description},
+			#{otherDepartments},
+			#{address},
+			#{notes},
+			#{handover},
+			#{papers},
+			#{handoverDownload},
+			#{papersDownload},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE certificate SET 	
+			certificate_name = #{certificateName},
+			certificate_code = #{certificateCode},
+			certificate_term = #{certificateTerm},
+			certificate_date = #{certificateDate},
+			handle_situation = #{handleSituation},
+			manager_department = #{managerDepartment},
+			fc_code = #{fcCode},
+			fc_state = #{fcState},
+			land_name = #{landName},
+			architecture_area = #{architectureArea},
+			land_area = #{landArea},
+			use_area = #{useArea},
+			architecture = #{architecture},
+			ownership_name = #{ownershipName},
+			purpose = #{purpose},
+			price = #{price},
+			rights = #{rights},
+			description = #{description},
+			other_departments = #{otherDepartments},
+			address = #{address},
+			notes = #{notes},
+			handover = #{handover},
+			papers = #{papers},
+			handover_download = #{handoverDownload},
+			papers_download = #{papersDownload},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE certificate SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>
